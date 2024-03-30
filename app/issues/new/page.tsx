@@ -1,12 +1,5 @@
 "use client";
-import {
-  Button,
-  Callout,
-  Spinner,
-  Text,
-  TextArea,
-  TextField,
-} from "@radix-ui/themes";
+import { Button, Callout, Spinner, TextField } from "@radix-ui/themes";
 import React, { useState } from "react";
 import SimpleMDE from "react-simplemde-editor";
 import axios from "axios";
@@ -43,8 +36,9 @@ const NewIssuePage = () => {
       setError("unexpected Error Happened");
     }
   };
+
   return (
-    <div className="max-w-xl ">
+    <div className="max-w-xl">
       {error && (
         <Callout.Root color="red" className="mb-5">
           <Callout.Text>{error}</Callout.Text>

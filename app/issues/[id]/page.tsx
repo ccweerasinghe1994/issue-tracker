@@ -4,6 +4,7 @@ import { Card, Flex, Heading, Text } from "@radix-ui/themes";
 import MarkDown from "react-markdown";
 import { notFound } from "next/navigation";
 import React, { FC } from "react";
+import delay from "delay";
 
 type TProps = {
   params: {
@@ -21,7 +22,7 @@ const IssueDetailPage: FC<TProps> = async ({ params }) => {
       id: parseInt(params.id),
     },
   });
-  //   await delay(2000);
+  await delay(2000);
   if (!issue) {
     notFound();
   }

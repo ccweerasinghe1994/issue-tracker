@@ -1,21 +1,21 @@
-import { Skeleton } from "@radix-ui/themes";
+import { Card, Flex, Heading, Skeleton } from "@radix-ui/themes";
 import React, { FC } from "react";
 
 const IssueDetailPageSkeleton: FC = async () => {
   return (
     <div>
-      <p>
-        <Skeleton>issue</Skeleton>
-      </p>
-      <p>
+      <Heading>
+        <Skeleton className="w-fit">sample heading</Skeleton>
+      </Heading>
+      <Flex gap={"4"} my={"2"}>
+        <Skeleton width={"48px"} height={"20px"} />
+        <Skeleton width={"127px"} height={"22px"} />
+      </Flex>
+      <Card className="prose mt-4">
         <Skeleton>
-          issue issue
-          issueissueissueissueissueissueissueissueissueissueissueissueissueissueissueissue
+          sasdad asdasd asdasd asdasdasd asdda asas asd a asd as ad ad
         </Skeleton>
-      </p>
-      <p>
-        <Skeleton>issue issueissue</Skeleton>
-      </p>
+      </Card>
     </div>
   );
 };
