@@ -9,6 +9,7 @@ import { useForm, Controller, SubmitHandler } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { createIssueSchema } from "@/app/validationSchemas";
 import { z } from "zod";
+import ErrorPage from "@/app/components/ErrorPage";
 
 type IIssueForm = z.infer<typeof createIssueSchema>;
 
@@ -44,11 +45,8 @@ const NewIssuePage = () => {
           placeholder="Title"
           {...register("title")}
         ></TextField.Root>
-        {errors.title && (
-          <Text color="red" as="p">
-            {errors.title.message}
-          </Text>
-        )}
+        <ErrorPage>{errors.title?.message}</ErrorPage>
+
         <Controller
           name="description"
           control={control}
@@ -56,11 +54,7 @@ const NewIssuePage = () => {
             <SimpleMDE placeholder="Reply to comment…" {...field} />
           )}
         />
-        {errors.description && (
-          <Text color="red" as="p">
-            {errors.description.message}
-          </Text>
-        )}
+        <ErrorPage>{errors.description?.message}</ErrorPage>
 
         <Button>Submit a new Issue</Button>
       </form>
