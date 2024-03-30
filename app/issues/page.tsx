@@ -11,7 +11,7 @@ const IssuesPage = async () => {
   const row = (issue: Issue) => (
     <Table.Row key={issue.id}>
       <Table.RowHeaderCell>
-        {issue.title}
+        <Link href={`/issues/${issue.id}`}>{issue.title}</Link>
         <div className="md:hidden">
           <IssuesStatusBadge status={issue.status} />
         </div>
