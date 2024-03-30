@@ -20,7 +20,7 @@ const NavBar = () => {
   return (
     <nav className="flex space-x-6 border-b mb-5 px-5 h-14 items-center">
       <Link href={"/"}>
-        <IoBugSharp />
+        <IoBugSharp color={"var(--accent-10)"} size={34} />
       </Link>
       <ul className="flex space-x-6">
         {links.map((linkItem) => (

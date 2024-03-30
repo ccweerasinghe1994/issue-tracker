@@ -5,13 +5,14 @@ import React from "react";
 import type { Issue } from "@prisma/client";
 import IssuesStatusBadge from "../components/IssuesStatusBadge";
 import delay from "delay";
+import CustomLink from "../components/CustomLink";
 const IssuesPage = async () => {
   const issues = await prisma.issue.findMany();
   await delay(2000);
   const row = (issue: Issue) => (
     <Table.Row key={issue.id}>
       <Table.RowHeaderCell>
-        <Link href={`/issues/${issue.id}`}>{issue.title}</Link>
+        <CustomLink href={`/issues/${issue.id}`}>{issue.title}</CustomLink>
         <div className="md:hidden">
           <IssuesStatusBadge status={issue.status} />
         </div>
