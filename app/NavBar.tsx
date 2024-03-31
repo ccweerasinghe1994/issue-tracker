@@ -14,8 +14,26 @@ import { usePathname } from "next/navigation";
 import React from "react";
 import { IoBugSharp } from "react-icons/io5";
 const NavBar = () => {
+  return (
+    <nav className="border-b mb-5 px-5 py-3">
+      <Container>
+        <Flex justify={"between"}>
+          <Flex align={"center"} gap={"3"}>
+            <Link href={"/"}>
+              <IoBugSharp color={"var(--accent-10)"} />
+            </Link>
+            <NavLinks />
+          </Flex>
+          <AuthStatus />
+        </Flex>
+      </Container>
+    </nav>
+  );
+};
+
+const NavLinks = () => {
   const pathName = usePathname();
-  const { status, data: session } = useSession();
+
   const links = [
     {
       label: "Dashboard",
@@ -28,58 +46,60 @@ const NavBar = () => {
   ];
 
   return (
-    <nav className="border-b mb-5 px-5 py-3">
-      <Container>
-        <Flex justify={"between"}>
-          <Flex align={"center"} gap={"3"}>
-            <Link href={"/"}>
-              <IoBugSharp color={"var(--accent-10)"} />
-            </Link>
-            <ul className="flex space-x-6">
-              {links.map((linkItem) => (
-                <li key={linkItem.href}>
-                  <Link
-                    className={classNames({
-                      "text-zinc-900": pathName === linkItem.href,
-                      "text-zinc-500": pathName !== linkItem.href,
-                      "transition-colors hover:text-zinc-800": true,
-                    })}
-                    href={linkItem.href}
-                  >
-                    <Text size={"2"}>{linkItem.label}</Text>
-                  </Link>
-                </li>
-              ))}
-            </ul>
-          </Flex>
-          <Box>
-            {status === "authenticated" && (
-              <DropdownMenu.Root>
-                <DropdownMenu.Trigger>
-                  <Avatar
-                    src={session.user?.image!}
-                    fallback={"?"}
-                    size={"2"}
-                    radius="full"
-                    className="cursor-pointer"
-                  />
-                </DropdownMenu.Trigger>
-                <DropdownMenu.Content>
-                  <DropdownMenu.Label>{session.user?.email}</DropdownMenu.Label>
-                  <DropdownMenu.Item>
-                    <Link href={"/api/auth/signout"}>Logout</Link>
-                  </DropdownMenu.Item>
-                </DropdownMenu.Content>
-              </DropdownMenu.Root>
-            )}
-            {status === "unauthenticated" && (
-              <Link href={"/api/auth/signin"}>Sign In</Link>
-            )}
-          </Box>
-        </Flex>
-      </Container>
-    </nav>
+    <ul className="flex space-x-6">
+      {links.map((linkItem) => (
+        <li key={linkItem.href}>
+          <Link
+            className={classNames({
+              "nav-link": true,
+              "!text-zinc-900 font-bold transition-colors underline underline-offset-8":
+                pathName === linkItem.href,
+            })}
+            href={linkItem.href}
+          >
+            <Text size={"2"}>{linkItem.label}</Text>
+          </Link>
+        </li>
+      ))}
+    </ul>
   );
+};
+
+const AuthStatus = () => {
+  const { status, data: session } = useSession();
+
+  if (status === "loading") return null;
+
+  if (status === "unauthenticated")
+    return (
+      <Link className="nav-link" href={"/api/auth/signin"}>
+        Sign In
+      </Link>
+    );
+
+  if (status === "authenticated")
+    return (
+      <Box>
+        <DropdownMenu.Root>
+          <DropdownMenu.Trigger>
+            <Avatar
+              src={session?.user?.image!}
+              fallback={"?"}
+              size={"2"}
+              radius="full"
+              className="cursor-pointer"
+              referrerPolicy="no-referrer"
+            />
+          </DropdownMenu.Trigger>
+          <DropdownMenu.Content>
+            <DropdownMenu.Label>{session?.user?.email}</DropdownMenu.Label>
+            <DropdownMenu.Item>
+              <Link href={"/api/auth/signout"}>Logout</Link>
+            </DropdownMenu.Item>
+          </DropdownMenu.Content>
+        </DropdownMenu.Root>
+      </Box>
+    );
 };
 
 export default NavBar;
