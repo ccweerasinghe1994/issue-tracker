@@ -1,5 +1,5 @@
 import { Card, Flex, Heading, Skeleton } from "@radix-ui/themes";
-import React, { FC } from "react";
+import { FC } from "react";
 
 const IssueDetailPageSkeleton: FC = async () => {
   return (

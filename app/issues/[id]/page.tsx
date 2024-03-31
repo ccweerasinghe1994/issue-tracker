@@ -1,10 +1,9 @@
-import IssuesStatusBadge from "@/app/components/IssuesStatusBadge";
+import { IssuesStatusBadge } from "@/app/components";
 import prisma from "@/prisma/client";
 import { Card, Flex, Heading, Text } from "@radix-ui/themes";
-import MarkDown from "react-markdown";
 import { notFound } from "next/navigation";
-import React, { FC } from "react";
-import delay from "delay";
+import { FC } from "react";
+import MarkDown from "react-markdown";
 
 type TProps = {
   params: {
@@ -22,7 +21,7 @@ const IssueDetailPage: FC<TProps> = async ({ params }) => {
       id: parseInt(params.id),
     },
   });
-  await delay(2000);
+
   if (!issue) {
     notFound();
   }

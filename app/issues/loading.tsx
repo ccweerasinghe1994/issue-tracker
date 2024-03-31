@@ -1,5 +1,4 @@
 import { Button, Skeleton, Table } from "@radix-ui/themes";
-import React from "react";
 
 const LoadingIssuePage = () => {
   return (
