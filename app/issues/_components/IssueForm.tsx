@@ -37,7 +37,12 @@ const IssueForm: FC<Props> = ({ issue }) => {
   const onSubmit: SubmitHandler<IIssueForm> = async (data) => {
     try {
       setIsSubmitting(true);
-      await axios.post("/api/issues", data);
+
+      if (issue) {
+        await axios.patch(`/api/issues/${issue.id}`, data);
+      } else {
+        await axios.post("/api/issues", data);
+      }
       router.push("/issues");
     } catch (error) {
       setIsSubmitting(false);
@@ -72,7 +77,8 @@ const IssueForm: FC<Props> = ({ issue }) => {
         <ErrorPage>{errors.description?.message}</ErrorPage>
 
         <Button disabled={isSubmitting}>
-          Submit a new Issue {isSubmitting && <Spinner size="2" />}
+          {issue ? "Update Issue" : "Submit a new Issue"}{" "}
+          {isSubmitting && <Spinner size="2" />}
         </Button>
       </form>
     </div>
