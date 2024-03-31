@@ -1,7 +1,7 @@
 import { IssueSchema } from "@/app/validationSchemas";
 import prisma from "@/prisma/client";
 import { NextRequest, NextResponse } from "next/server";
-
+import delay from 'delay';
 interface Params {
     params:{
         id:string
@@ -56,7 +56,7 @@ export async function PATCH(request:NextRequest,{params}:Params){
 }
 
 export async function DELETE(request:NextRequest,{params}:Params){
-
+    delay(2000)
     if (params.id && Number.isNaN(parseInt(params.id))) {
        return NextResponse.json({
             error:'only number are allowed'
