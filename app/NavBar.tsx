@@ -1,17 +1,18 @@
 "use client";
+import { AvatarIcon } from "@radix-ui/react-icons";
 import {
   Avatar,
   Box,
   Container,
   DropdownMenu,
   Flex,
+  Skeleton,
   Text,
 } from "@radix-ui/themes";
 import classNames from "classnames";
 import { useSession } from "next-auth/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import React from "react";
 import { IoBugSharp } from "react-icons/io5";
 const NavBar = () => {
   return (
@@ -68,7 +69,9 @@ const NavLinks = () => {
 const AuthStatus = () => {
   const { status, data: session } = useSession();
 
-  if (status === "loading") return null;
+  if (status === "loading") {
+    return <Skeleton className="w-12 h-6" />;
+  }
 
   if (status === "unauthenticated")
     return (
