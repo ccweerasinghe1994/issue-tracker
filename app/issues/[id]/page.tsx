@@ -1,6 +1,7 @@
-import { Box, Grid } from "@radix-ui/themes";
+import { Box, Flex, Grid } from "@radix-ui/themes";
 import { notFound } from "next/navigation";
 import { FC } from "react";
+import IssueDeleteButton from "./IssueDeleteButton";
 import IssueDetails from "./IssueDetails";
 import IssueEditButton from "./IssueEditButton";
 type TProps = {
@@ -18,15 +19,18 @@ const IssueDetailPage: FC<TProps> = async ({ params }) => {
     <Grid
       columns={{
         initial: "1",
-        md: "2",
+        sm: "5",
       }}
       gap={"5"}
     >
-      <Box>
+      <Box className="md:col-span-4">
         <IssueDetails id={params.id} />
       </Box>
       <Box>
-        <IssueEditButton id={params.id} />
+        <Flex direction={"column"} gap={"4"}>
+          <IssueEditButton id={params.id} />
+          <IssueDeleteButton id={params.id} />
+        </Flex>
       </Box>
     </Grid>
   );
