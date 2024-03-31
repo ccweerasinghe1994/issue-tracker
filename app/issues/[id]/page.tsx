@@ -29,7 +29,7 @@ const IssueDetailPage: FC<TProps> = async ({ params }) => {
       <Box>
         <Flex direction={"column"} gap={"4"}>
           <IssueEditButton id={params.id} />
-          <IssueDeleteButton id={params.id} />
+          <IssueDeleteButton id={parseInt(params.id)} />
         </Flex>
       </Box>
     </Grid>

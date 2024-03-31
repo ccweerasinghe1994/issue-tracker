@@ -54,3 +54,34 @@ export async function PATCH(request:NextRequest,{params}:Params){
      
 
 }
+
+export async function DELETE(request:NextRequest,{params}:Params){
+
+    if (params.id && Number.isNaN(parseInt(params.id))) {
+       return NextResponse.json({
+            error:'only number are allowed'
+        },{
+            status:404
+        })
+      }
+    
+      const issue = await prisma.issue.findUnique({
+        where:{
+            id:parseInt(params.id)
+        }
+      });
+
+      if (!issue) {
+        return NextResponse.json({error:'Issue not Found'},{status:404})
+      }
+
+      await prisma.issue.delete({
+        where:{
+            id:parseInt(params.id)
+        }
+      })
+
+      return NextResponse.json({})
+
+    
+}
