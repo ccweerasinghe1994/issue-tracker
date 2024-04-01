@@ -1,7 +1,8 @@
+import serverOptions from '@/app/auth/authOption';
 import { IssueSchema } from "@/app/validationSchemas";
 import prisma from "@/prisma/client";
+import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
-import delay from 'delay';
 interface Params {
     params:{
         id:string
@@ -9,7 +10,11 @@ interface Params {
 }
 
 export async function PATCH(request:NextRequest,{params}:Params){
+    const session = await getServerSession(serverOptions);
 
+    if (!session) {
+        return NextResponse.json({},{status:401});
+    }
     if (params.id && Number.isNaN(parseInt(params.id))) {
        return NextResponse.json({
             error:'only number are allowed'
@@ -56,7 +61,13 @@ export async function PATCH(request:NextRequest,{params}:Params){
 }
 
 export async function DELETE(request:NextRequest,{params}:Params){
-    delay(2000)
+    const session =  await getServerSession(serverOptions);
+    console.log("🚀 ~ DELETE ~ session:", session)
+    
+    if (!session) {
+        return NextResponse.json({},{status:401});
+    }
+
     if (params.id && Number.isNaN(parseInt(params.id))) {
        return NextResponse.json({
             error:'only number are allowed'

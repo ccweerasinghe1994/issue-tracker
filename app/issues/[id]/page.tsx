@@ -4,6 +4,8 @@ import { FC } from "react";
 import IssueDeleteButton from "./IssueDeleteButton";
 import IssueDetails from "./IssueDetails";
 import IssueEditButton from "./IssueEditButton";
+import { getServerSession } from "next-auth";
+import authOptions from "@/app/auth/authOption";
 type TProps = {
   params: {
     id: string;
@@ -15,6 +17,16 @@ const IssueDetailPage: FC<TProps> = async ({ params }) => {
     notFound();
   }
 
+  const session = await getServerSession(authOptions);
+  
+  const actions = session && (
+    <Box>
+      <Flex direction={"column"} gap={"4"}>
+        <IssueEditButton id={params.id} />
+        <IssueDeleteButton id={parseInt(params.id)} />
+      </Flex>
+    </Box>
+  );
   return (
     <Grid
       columns={{
@@ -26,12 +38,7 @@ const IssueDetailPage: FC<TProps> = async ({ params }) => {
       <Box className="md:col-span-4">
         <IssueDetails id={params.id} />
       </Box>
-      <Box>
-        <Flex direction={"column"} gap={"4"}>
-          <IssueEditButton id={params.id} />
-          <IssueDeleteButton id={parseInt(params.id)} />
-        </Flex>
-      </Box>
+      {actions}
     </Grid>
   );
 };
