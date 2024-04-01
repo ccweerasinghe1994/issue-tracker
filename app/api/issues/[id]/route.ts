@@ -1,5 +1,5 @@
 import serverOptions from '@/app/auth/authOption';
-import { IssueSchema } from "@/app/validationSchemas";
+import { IssueSchema, PatchIssueSchema } from "@/app/validationSchemas";
 import prisma from "@/prisma/client";
 import { getServerSession } from "next-auth";
 import { NextRequest, NextResponse } from "next/server";
@@ -17,27 +17,41 @@ export async function PATCH(request:NextRequest,{params}:Params){
     }
     if (params.id && Number.isNaN(parseInt(params.id))) {
        return NextResponse.json({
-            error:'only number are allowed'
+            error:'only numbers are allowed'
         },{
             status:404
         })
       }
     const body = await request.json();
-    const validation = IssueSchema.safeParse(body);
-
+    const validation = PatchIssueSchema.safeParse(body);
+    
     if (!validation.success) {
         return NextResponse.json(validation.error.format(),{status:400})
     }
 
-
+    
     const issue = await prisma.issue.findUnique({
         where:{
             id:parseInt(params.id)
         }
     })
-
+    
     if (!issue) {
         return NextResponse.json({error:"Issue not found"},{status:404})
+    }
+    
+    const {assignToUserId,description,title} = validation.data;
+
+    if (assignToUserId) {
+        const user = await prisma.user.findUnique({
+            where:{
+                id:assignToUserId
+            }
+        });
+
+        if (!user) {
+            return NextResponse.json({error:'Invalid User Id'},{status:400})
+        }
     }
 
 
@@ -46,8 +60,9 @@ export async function PATCH(request:NextRequest,{params}:Params){
             id:parseInt(params.id)
         },
         data:{
-            title:validation.data.title,
-            description:validation.data.description
+            title,
+            description,
+            assignToUserId
         }
     });
 
@@ -62,7 +77,6 @@ export async function PATCH(request:NextRequest,{params}:Params){
 
 export async function DELETE(request:NextRequest,{params}:Params){
     const session =  await getServerSession(serverOptions);
-    console.log("🚀 ~ DELETE ~ session:", session)
     
     if (!session) {
         return NextResponse.json({},{status:401});
