@@ -1,8 +1,9 @@
 import { Link as CustomLink, IssuesStatusBadge } from "@/app/components";
 import prisma from "@/prisma/client";
 import type { Issue } from "@prisma/client";
-import { Button, Table } from "@radix-ui/themes";
+import { Button, Flex, Table } from "@radix-ui/themes";
 import Link from "next/link";
+import IssueStatusFilter from "./IssueStatusFilter";
 const IssuesPage = async () => {
   const issues = await prisma.issue.findMany();
   const row = (issue: Issue) => (
@@ -26,11 +27,12 @@ const IssuesPage = async () => {
   );
   return (
     <div>
-      <div className="mb-5">
+      <Flex mb={"5"} justify={"between"}>
+        <IssueStatusFilter />
         <Button>
           <Link href={"/issues/new"}>New Issue</Link>
         </Button>
-      </div>
+      </Flex>
 
       <Table.Root variant="surface">
         <Table.Header>
