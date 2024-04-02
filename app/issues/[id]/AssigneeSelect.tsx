@@ -4,7 +4,7 @@ import { Select, Skeleton } from "@radix-ui/themes";
 import { useQuery } from "@tanstack/react-query";
 import axios from "axios";
 import { FC } from "react";
-
+import { toast, Toaster } from "react-hot-toast";
 interface Props {
   issueItem: Issue;
 }
@@ -38,25 +38,32 @@ const AssigneeSelect: FC<Props> = ({ issueItem }) => {
     ));
 
   const handleChange = (userId: string) => {
-    axios.patch(`/api/issues/${issueItem.id}`, {
-      assignToUserId: userId === " " ? null : userId,
-    });
+    axios
+      .patch(`/api/issues/${issueItem.id}`, {
+        assignToUserId: userId === " " ? null : userId,
+      })
+      .catch(() => {
+        toast.error("Changes could not be saved");
+      });
   };
 
   return (
-    <Select.Root
-      onValueChange={handleChange}
-      defaultValue={issueItem.assignToUserId || "null"}
-    >
-      <Select.Trigger placeholder="Assign..." />
-      <Select.Content>
-        <Select.Group>
-          <Select.Label>Suggestions</Select.Label>
-          <Select.Item value="null">Unassigned</Select.Item>
-          {usersRows}
-        </Select.Group>
-      </Select.Content>
-    </Select.Root>
+    <>
+      <Toaster />
+      <Select.Root
+        onValueChange={handleChange}
+        defaultValue={issueItem.assignToUserId || "null"}
+      >
+        <Select.Trigger placeholder="Assign..." />
+        <Select.Content>
+          <Select.Group>
+            <Select.Label>Suggestions</Select.Label>
+            <Select.Item value="null">Unassigned</Select.Item>
+            {usersRows}
+          </Select.Group>
+        </Select.Content>
+      </Select.Root>
+    </>
   );
 };
 
