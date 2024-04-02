@@ -10,16 +10,7 @@ interface Props {
 }
 
 const AssigneeSelect: FC<Props> = ({ issueItem }) => {
-  const {
-    data: users,
-    error,
-    isLoading,
-  } = useQuery<User[]>({
-    queryKey: ["users"],
-    queryFn: () => axios.get("/api/users").then((res) => res.data),
-    staleTime: 60 * 1000,
-    retry: 3,
-  });
+  const { data: users, error, isLoading } = useUsers();
 
   if (isLoading) {
     return <Skeleton width={"208px"} height={"32px"} />;
@@ -66,5 +57,13 @@ const AssigneeSelect: FC<Props> = ({ issueItem }) => {
     </>
   );
 };
+
+const useUsers = () =>
+  useQuery<User[]>({
+    queryKey: ["users"],
+    queryFn: () => axios.get("/api/users").then((res) => res.data),
+    staleTime: 60 * 1000,
+    retry: 3,
+  });
 
 export default AssigneeSelect;
