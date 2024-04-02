@@ -1,11 +1,34 @@
 import { Link as CustomLink, IssuesStatusBadge } from "@/app/components";
 import prisma from "@/prisma/client";
-import type { Issue } from "@prisma/client";
+import { Status, type Issue } from "@prisma/client";
 import { Button, Flex, Table } from "@radix-ui/themes";
 import Link from "next/link";
 import IssueStatusFilter from "./IssueStatusFilter";
-const IssuesPage = async () => {
-  const issues = await prisma.issue.findMany();
+import { FC } from "react";
+
+interface Props {
+  searchParams: {
+    status: string;
+  };
+}
+
+const IssuesPage: FC<Props> = async ({ searchParams }) => {
+  console.log(
+    "🚀 ~ constIssuesPage:FC<Props>= ~ searchParams:",
+    searchParams.status
+  );
+
+  const validStatus: string[] = Object.values(Status);
+  const validation = validStatus.includes(searchParams.status);
+
+  const passedFilterValue = validation ? searchParams.status : undefined;
+
+  const issues = await prisma.issue.findMany({
+    where: {
+      status: passedFilterValue as Status,
+    },
+  });
+
   const row = (issue: Issue) => (
     <Table.Row key={issue.id}>
       <Table.RowHeaderCell>
@@ -25,6 +48,7 @@ const IssuesPage = async () => {
       </Table.Cell>
     </Table.Row>
   );
+
   return (
     <div>
       <Flex mb={"5"} justify={"between"}>
