@@ -15,10 +15,6 @@ const authOptions: NextAuthOptions = {
     session: {
         strategy: 'jwt'
     },
-    callbacks: {
-        //     let's setup the signout callback
-
-    }
 }
 
 export default authOptions;
