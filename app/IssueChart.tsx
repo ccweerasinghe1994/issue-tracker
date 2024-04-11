@@ -29,7 +29,7 @@ const IssueChart: FC<Props> = ({closed, inProgress, open}) => {
     ]
     console.log(data)
     return (
-        <Card className={'w-[50vw] h-[50vh]'}>
+        <Card className={'h-full'}>
             <ResponsiveContainer width={'100%'} height={'100%'}>
 
                 <BarChart data={data}>
