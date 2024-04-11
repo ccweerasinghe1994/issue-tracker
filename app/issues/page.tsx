@@ -5,6 +5,7 @@ import {FC} from "react";
 import Pagination from "@/app/components/Pagination";
 import IssueTable, {columnNames} from "@/app/issues/IssueTable";
 import IssueAction from "@/app/issues/IssueAction";
+import {Metadata} from "next";
 
 interface Props {
     searchParams: {
@@ -58,3 +59,10 @@ const IssuesPage: FC<Props> = async ({searchParams}) => {
 };
 
 export default IssuesPage;
+
+
+export const metadata: Metadata = {
+    title: 'Issue Tracker - List Page',
+    description: 'View all issues in the system.',
+    keywords: ['Issue', 'List', 'View']
+}
