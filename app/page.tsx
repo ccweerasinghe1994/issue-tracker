@@ -1,15 +1,7 @@
-import Pagination from "./components/Pagination";
+import LatestIssues from "@/app/LatestIssues";
 
-export default function Home({
-  searchParams,
-}: {
-  searchParams: { page: string };
-}) {
-  return (
-    <Pagination
-      currentPage={parseInt(searchParams.page) || 1}
-      itemCount={101}
-      pageSize={10}
-    />
-  );
+export default function Home() {
+    return (
+        <LatestIssues/>
+    );
 }
