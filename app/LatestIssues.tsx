@@ -27,7 +27,7 @@ const LatestIssues = async () => {
                                     <Link href={`/issues/${issue.id}`}>
                                         {issue.title}
                                     </Link>
-                                    {issue.assignToUser && (<IssuesStatusBadge status={issue.status}/>)}
+                                    {issue.status && (<IssuesStatusBadge status={issue.status}/>)}
                                 </Flex>
                                 {
                                     issue.assignToUser &&

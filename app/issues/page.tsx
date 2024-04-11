@@ -32,7 +32,7 @@ const IssuesPage: FC<Props> = async ({searchParams}) => {
             }
             : undefined;
     const page = parseInt(searchParams.page) || 1;
-    const pageSize = 5;
+    const pageSize = 10;
     const skip = (page - 1) * pageSize;
     const issues = await prisma.issue.findMany({
         where: {
