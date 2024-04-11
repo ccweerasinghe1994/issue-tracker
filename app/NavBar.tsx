@@ -1,7 +1,7 @@
 "use client";
 import {Avatar, Box, Container, DropdownMenu, Flex, Skeleton, Text,} from "@radix-ui/themes";
 import classNames from "classnames";
-import {useSession} from "next-auth/react";
+import {signOut, useSession} from "next-auth/react";
 import Link from "next/link";
 import {usePathname} from "next/navigation";
 import {IoBugSharp} from "react-icons/io5";
@@ -89,7 +89,8 @@ const AuthStatus = () => {
                     <DropdownMenu.Content>
                         <DropdownMenu.Label>{session?.user?.email}</DropdownMenu.Label>
                         <DropdownMenu.Item>
-                            <Link href={"/api/auth/signout"}>Logout</Link>
+                            <Text className={'cursor-pointer'}
+                                  onClick={() => signOut({callbackUrl: '/', redirect: true})}>Logout</Text>
                         </DropdownMenu.Item>
                     </DropdownMenu.Content>
                 </DropdownMenu.Root>
