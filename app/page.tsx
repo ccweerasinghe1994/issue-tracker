@@ -1,5 +1,5 @@
-import IssueSummery from "@/app/IssueSummery";
 import prisma from "@/prisma/client";
+import IssueChart from "@/app/IssueChart";
 
 export default async function Home() {
 
@@ -20,6 +20,6 @@ export default async function Home() {
     });
 
     return (
-        <IssueSummery open={open} closed={closed} inProgress={inProgress}/>
+        <IssueChart open={open} closed={closed} inProgress={inProgress}/>
     );
 }
