@@ -1,6 +1,6 @@
 import {Box, Flex, Grid} from "@radix-ui/themes";
 import {notFound} from "next/navigation";
-import {FC} from "react";
+import {cache, FC} from "react";
 import IssueDeleteButton from "./IssueDeleteButton";
 import IssueDetails from "./IssueDetails";
 import IssueEditButton from "./IssueEditButton";
@@ -16,17 +16,19 @@ type TProps = {
     };
 };
 
+const fetchUser = cache((userId: string) => prisma.issue.findUnique({
+    where: {
+        id: parseInt(userId),
+    },
+}));
+
 const IssueDetailPage: FC<TProps> = async ({params}) => {
     if (params?.id && Number.isNaN(parseInt(params?.id))) {
         notFound();
     }
 
     const session = await getServerSession(authOptions);
-    const issueItem = await prisma.issue.findUnique({
-        where: {
-            id: parseInt(params.id),
-        },
-    });
+    const issueItem = await fetchUser(params.id);
     const actions = session && (
         <Box>
             <Flex direction={"column"} gap={"4"}>
@@ -55,11 +57,7 @@ const IssueDetailPage: FC<TProps> = async ({params}) => {
 export default IssueDetailPage;
 
 export async function generateMetadata({params}: TProps): Promise<Metadata> {
-    const issue = await prisma.issue.findUnique({
-        where: {
-            id: parseInt(params.id),
-        },
-    })
+    const issue = await fetchUser(params.id);
 
     return {
         title: issue?.title,
